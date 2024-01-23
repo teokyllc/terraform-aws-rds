@@ -1,5 +1,5 @@
 resource "aws_security_group" "security_group" {
-  name        = "${var.tags.environment}-${var.db_name}"
+  name        = "${var.tags.environment}-${var.rds_instace_name}"
   description = "Security group for RDS instance ${var.tags.environment}-${var.db_name}."
   vpc_id      = var.vpc_id
   tags        = merge(var.tags, {
