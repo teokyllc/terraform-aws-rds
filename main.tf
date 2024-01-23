@@ -163,8 +163,8 @@ resource "aws_secretsmanager_secret_version" "rds_credentials" {
   secret_id     = aws_secretsmanager_secret.rds_credentials[0].id
   secret_string = <<EOF
 {
-  "username": "${data.aws_ssm_parameter.admin_user.value}",
-  "password": "${data.aws_ssm_parameter.admin_password.value}",
+  "username": "${var.db_admin_username}",
+  "password": "${random_password.rds_password.result}",
   "engine": "mysql",
   "host": "${aws_db_instance.db_instance[0].endpoint}",
   "port": ${aws_db_instance.db_instance[0].port},
