@@ -1,29 +1,29 @@
 output "db_instance_id" {
-  value = var.is_db_instance ? aws_db_instance.db_instance[0].id : null
+  value = var.create_db_instance ? aws_db_instance.db_instance[0].id : null
 }
 
 output "db_instance_arn" {
-  value = var.is_db_instance ? aws_db_instance.db_instance[0].arn : null
+  value = var.create_db_instance ? aws_db_instance.db_instance[0].arn : null
 }
 
 output "db_instance_address" {
-  value = var.is_db_instance ? aws_db_instance.db_instance[0].address : null
+  value = var.create_db_instance ? aws_db_instance.db_instance[0].address : null
 }
 
 output "db_instance_port" {
-  value = var.is_db_instance ? aws_db_instance.db_instance[0].port : null
+  value = var.create_db_instance ? aws_db_instance.db_instance[0].port : null
 }
 
 output "db_replica_id" {
-  value = var.is_db_instance_replica ? aws_db_instance.db_instance_replica[0].id : null
+  value = var.create_db_instance_replica ? aws_db_instance.db_instance_replica[0].id : null
 }
 
 output "db_replica_arn" {
-  value = var.is_db_instance_replica ? aws_db_instance.db_instance_replica[0].arn : null
+  value = var.create_db_instance_replica ? aws_db_instance.db_instance_replica[0].arn : null
 }
 
 output "db_replica_address" {
-  value = var.is_db_instance_replica ? aws_db_instance.db_instance_replica[0].address : null
+  value = var.create_db_instance_replica ? aws_db_instance.db_instance_replica[0].address : null
 }
 
 output "db_options_group_id" {
