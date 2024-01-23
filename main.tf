@@ -107,7 +107,7 @@ resource "aws_db_instance" "db_instance" {
   storage_type                    = var.storage_type
   iops                            = var.iops
   storage_encrypted               = var.storage_encrypted
-  vpc_security_group_ids          = [var.aws_security_group.security_group.id]
+  vpc_security_group_ids          = [aws_security_group.security_group.id]
   tags = merge(var.tags, {
     Name = var.rds_instace_name
   })
@@ -142,7 +142,7 @@ resource "aws_db_instance" "db_instance_replica" {
   storage_type                    = var.storage_type
   iops                            = var.iops
   storage_encrypted               = var.storage_encrypted
-  vpc_security_group_ids          = [var.aws_security_group.security_group.id]
+  vpc_security_group_ids          = [aws_security_group.security_group.id]
   tags       = merge(var.tags, {
     Name = var.rds_instace_name
   })
@@ -176,7 +176,7 @@ resource "aws_db_proxy" "proxy" {
   idle_client_timeout    = var.db_proxy_idle_client_timeout
   require_tls            = var.db_proxy_require_tls
   role_arn               = var.db_proxy_role_arn
-  vpc_security_group_ids = [var.aws_security_group.security_group.id]
+  vpc_security_group_ids = [aws_security_group.security_group.id]
   vpc_subnet_ids         = data.aws_subnets.rds_subnets.ids
   tags                   = var.tags
 
