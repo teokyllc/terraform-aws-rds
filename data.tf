@@ -9,7 +9,7 @@ data "aws_subnets" "rds_subnets" {
   }
 
   tags = {
-    Tier = var.rds_subnet_tier
+    rds_subnet = "true"
   }
 }
 
