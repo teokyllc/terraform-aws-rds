@@ -84,7 +84,7 @@ resource "aws_db_instance" "db_instance" {
   count                           = var.create_db_instance ? 1 : 0
   allocated_storage               = var.allocated_storage
   max_allocated_storage           = var.max_allocated_storage
-  availability_zone               = var.availability_zone
+  availability_zone               = var.multi_az ? null : "${var.tags.aws_region}-${var.availability_zone}"
   backup_window                   = var.backup_window
   db_name                         = var.db_name
   engine                          = var.engine
