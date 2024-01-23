@@ -1,3 +1,9 @@
+variable "aws_region" {
+  type        = string
+  description = "The AWS region."
+  default     = null
+}
+
 variable "create_db_instance" {
   type        = bool
   description = "Creates a RDS instance which is isolated.  Don't use with var.is_db_cluster."
