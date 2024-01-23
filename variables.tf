@@ -28,6 +28,12 @@ variable "db_port" {
   default     = null
 }
 
+variable "db_admin_username" {
+  type        = number
+  description = "The username of the RDS instance administrator."
+  default     = null
+}
+
 variable "engine" {
   type        = string
   description = "The database engine to use.  https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_CreateDBInstance.html"
@@ -43,18 +49,6 @@ variable "engine_version" {
 variable "instance_class" {
   type        = string
   description = "The instance type of the RDS instance."
-  default     = null
-}
-
-variable "admin_user_parameter_name" {
-  type        = string
-  description = "The name of the SSM parameter holding the RDS username."
-  default     = null
-}
-
-variable "admin_password_parameter_name" {
-  type        = string
-  description = "The name of the SSM parameter holding the RDS username."
   default     = null
 }
 

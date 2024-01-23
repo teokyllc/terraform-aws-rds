@@ -14,11 +14,3 @@ data "aws_subnets" "rds_subnets" {
 }
 
 data "aws_region" "current" {}
-
-data "aws_ssm_parameter" "admin_user" {
-  name = var.admin_user_parameter_name
-}
-
-data "aws_ssm_parameter" "admin_password" {
-  name = var.admin_password_parameter_name
-}
