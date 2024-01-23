@@ -4,7 +4,7 @@ resource "aws_db_parameter_group" "parameter_group" {
   description = var.parameter_group_description
   family      = var.parameter_group_family
   tags        = merge(var.tags, {
-    Name      = "${var.tags.Platform}-${var.tags.Platform-Region}-${var.tags.Environment}"
+    Name      = var.parameter_group_name
   })
 
   dynamic "parameter" {
@@ -22,6 +22,9 @@ resource "aws_db_option_group" "option_group" {
   name                 = "${var.rds_instace_name}-option-group"
   engine_name          = var.engine
   major_engine_version = var.engine_version
+  tags        = merge(var.tags, {
+    Name      = "${var.rds_instace_name}-option-group"
+  })
 
   dynamic "option" {
     for_each = var.options
@@ -39,12 +42,12 @@ resource "aws_db_subnet_group" "subnet_group" {
   name       = var.subnet_group_name
   subnet_ids = data.aws_subnets.rds_subnets.ids
   tags       = merge(var.tags, {
-    Name     = "${var.tags.Platform}-${var.tags.Platform-Region}-${var.tags.Environment}"
+    Name     = var.subnet_group_name
   })
 }
 
 resource "aws_db_instance" "db_instance" {
-  count                           = var.is_db_instance ? 1 : 0
+  count                           = var.create_db_instance ? 1 : 0
   allocated_storage               = var.allocated_storage
   max_allocated_storage           = var.max_allocated_storage
   availability_zone               = var.availability_zone
@@ -76,13 +79,13 @@ resource "aws_db_instance" "db_instance" {
   iops                            = var.iops
   storage_encrypted               = var.storage_encrypted
   vpc_security_group_ids          = [var.security_group_id]
-  tags       = merge(var.tags, {
+  tags = merge(var.tags, {
     Name = var.rds_instace_name
   })
 }
 
 resource "aws_db_instance" "db_instance_replica" {
-  count                           = var.is_db_instance_replica ? 1 : 0
+  count                           = var.create_db_instance_replica ? 1 : 0
   allocated_storage               = var.allocated_storage
   max_allocated_storage           = var.max_allocated_storage
   availability_zone               = "${data.aws_region.current.name}${var.availability_zone}"

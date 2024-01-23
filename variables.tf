@@ -1,10 +1,10 @@
-variable "is_db_instance" {
+variable "create_db_instance" {
   type        = bool
   description = "Creates a RDS instance which is isolated.  Don't use with var.is_db_cluster."
   default     = false
 }
 
-variable "is_db_instance_replica" {
+variable "create_db_instance_replica" {
   type        = bool
   description = "Creates a RDS read replica."
   default     = false
@@ -37,16 +37,19 @@ variable "engine_version" {
 variable "instance_class" {
   type        = string
   description = "The instance type of the RDS instance."
+  default     = null
 }
 
 variable "admin_user_parameter_name" {
   type        = string
   description = "The name of the SSM parameter holding the RDS username."
+  default     = null
 }
 
 variable "admin_password_parameter_name" {
   type        = string
   description = "The name of the SSM parameter holding the RDS username."
+  default     = null
 }
 
 variable "skip_final_snapshot" {
