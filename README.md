@@ -13,7 +13,7 @@ You can use versioned release tags to ensure that your project using this module
 <b>Repo latest commit</b><br>
 ```
 module "rds" {
-  source = "github.com/Medality-Health/terraform-aws-rds"
+  source = "github.com/teokyllc/terraform-aws-rds"
   ...
 ```
 <br>
@@ -22,7 +22,7 @@ module "rds" {
 
 ```
 module "rds" {
-  source = "github.com/Medality-Health/terraform-aws-rds?ref=1.0.0"
+  source = "github.com/teokyllc/terraform-aws-rds?ref=1.0"
   ...
 ```
 <br>
@@ -32,7 +32,7 @@ This is an example of using this module to create a DB instance.<br>
 
 ```
 module "rds" {
-  source                          = "github.com/Medality-Health/terraform-aws-rds?ref=1.0.0"
+  source                          = "github.com/teokyllc/terraform-aws-rds?ref=1.0"
   is_db_instance                  = true
   allocated_storage               = 20
   max_allocated_storage           = 100
@@ -77,7 +77,7 @@ module "rds" {
 <br><br>
 Module can be tested locally:<br>
 ```
-git clone https://github.com/Medality-Health/terraform-aws-rds.git
+git clone https://github.com/teokyllc/terraform-aws-rds.git
 cd terraform-aws-rds
 
 cat <<EOF > rds.auto.tfvars
