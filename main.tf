@@ -3,7 +3,7 @@ resource "aws_security_group" "security_group" {
   description = "Security group for RDS instance ${var.tags.environment}-${var.db_name}."
   vpc_id      = var.vpc_id
   tags        = merge(var.tags, {
-    Name      = "${var.tags.environment}-${var.db_name}"
+    Name      = "${var.tags.environment}-${var.rds_instace_name}"
   })
 }
 
@@ -29,11 +29,11 @@ resource "aws_security_group_rule" "non_publicly_accessible_rule" {
 
 resource "aws_db_parameter_group" "parameter_group" {
   count       = var.create_parameter_group ? 1 : 0
-  name        = var.parameter_group_name
+  name        = "${var.tags.environment}-${var.rds_instace_name}-parameter-group"
   description = var.parameter_group_description
   family      = var.parameter_group_family
   tags        = merge(var.tags, {
-    Name      = var.parameter_group_name
+    Name      = "${var.tags.environment}-${var.rds_instace_name}-parameter-group"
   })
 
   dynamic "parameter" {
@@ -48,11 +48,11 @@ resource "aws_db_parameter_group" "parameter_group" {
 
 resource "aws_db_option_group" "option_group" {
   count                = var.create_option_group ? 1 : 0
-  name                 = "${var.rds_instace_name}-option-group"
+  name                 = "${var.tags.environment}-${var.rds_instace_name}-options-group"
   engine_name          = var.engine
   major_engine_version = var.engine_version
   tags        = merge(var.tags, {
-    Name      = "${var.rds_instace_name}-option-group"
+    Name      = "${var.tags.environment}-${var.rds_instace_name}-options-group"
   })
 
   dynamic "option" {
@@ -68,10 +68,10 @@ resource "aws_db_option_group" "option_group" {
 }
 
 resource "aws_db_subnet_group" "subnet_group" {
-  name       = var.subnet_group_name
+  name       = "${var.tags.environment}-${var.rds_instace_name}-subnet-group"
   subnet_ids = data.aws_subnets.rds_subnets.ids
   tags       = merge(var.tags, {
-    Name     = var.subnet_group_name
+    Name     = "${var.tags.environment}-${var.rds_instace_name}-subnet-group"
   })
 }
 
