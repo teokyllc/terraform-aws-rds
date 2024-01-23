@@ -93,7 +93,7 @@ resource "aws_db_instance" "db_instance" {
   multi_az                        = var.multi_az
   character_set_name              = var.character_set_name
   username                        = var.db_admin_username
-  password                        = random_password.password.result
+  password                        = random_password.rds_password.result
   parameter_group_name            = var.create_parameter_group ? aws_db_parameter_group.parameter_group[0].name : null
   db_subnet_group_name            = aws_db_subnet_group.subnet_group.name
   option_group_name               = var.create_option_group ? aws_db_option_group.option_group[0].name : null
@@ -128,7 +128,7 @@ resource "aws_db_instance" "db_instance_replica" {
   instance_class                  = var.instance_class
   multi_az                        = var.multi_az
   character_set_name              = var.character_set_name
-  password                        = random_password.password.result
+  password                        = random_password.rds_password.result
   parameter_group_name            = var.create_parameter_group ? aws_db_parameter_group.parameter_group[0].name : null
   db_subnet_group_name            = aws_db_subnet_group.subnet_group.name
   option_group_name               = var.create_option_group ? aws_db_option_group.option_group[0].name : null
