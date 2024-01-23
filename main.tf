@@ -13,7 +13,7 @@ resource "aws_security_group_rule" "publicly_accessible_rule" {
   from_port         = var.db_port
   to_port           = var.db_port
   protocol          = "tcp"
-  cidr_blocks       = "0.0.0.0/0"
+  cidr_blocks       = ["0.0.0.0/0"]
   security_group_id = aws_security_group.security_group.id
 }
 
@@ -23,7 +23,7 @@ resource "aws_security_group_rule" "non_publicly_accessible_rule" {
   from_port         = var.db_port
   to_port           = var.db_port
   protocol          = "tcp"
-  cidr_blocks       = data.aws_vpc.vpc.cidr_block
+  cidr_blocks       = [data.aws_vpc.vpc.cidr_block]
   security_group_id = aws_security_group.security_group.id
 }
 
