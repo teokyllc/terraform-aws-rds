@@ -22,6 +22,12 @@ variable "db_name" {
   default     = null
 }
 
+variable "db_port" {
+  type        = number
+  description = "The port number for database and security group policy."
+  default     = null
+}
+
 variable "engine" {
   type        = string
   description = "The database engine to use.  https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_CreateDBInstance.html"
@@ -156,12 +162,6 @@ variable "multi_az" {
   type        = bool
   description = "Specifies if the RDS instance is multi-AZ."
   default     = false
-}
-
-variable "security_group_id" {
-  type        = string
-  description = "List of VPC security groups to associate."
-  default     = null
 }
 
 variable "deletion_protection" {

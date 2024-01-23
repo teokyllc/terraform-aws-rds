@@ -1,3 +1,32 @@
+resource "aws_security_group" "security_group" {
+  name        = "${var.tags.environment}-${var.db_name}"
+  description = "Security group for RDS instance ${var.tags.environment}-${var.db_name}."
+  vpc_id      = var.vpc_id
+  tags        = merge(var.tags, {
+    Name      = "${var.tags.environment}-${var.db_name}"
+  })
+}
+
+resource "aws_security_group_rule" "publicly_accessible_rule" {
+  count             = var.publicly_accessible ? 1 : 0
+  type              = "ingress"
+  from_port         = var.db_port
+  to_port           = var.db_port
+  protocol          = "tcp"
+  cidr_blocks       = "0.0.0.0/0"
+  security_group_id = aws_security_group.security_group.id
+}
+
+resource "aws_security_group_rule" "non_publicly_accessible_rule" {
+  count             = var.publicly_accessible ? 0 : 1
+  type              = "ingress"
+  from_port         = var.db_port
+  to_port           = var.db_port
+  protocol          = "tcp"
+  cidr_blocks       = data.aws_vpc.vpc.cidr_block
+  security_group_id = aws_security_group.security_group.id
+}
+
 resource "aws_db_parameter_group" "parameter_group" {
   count       = var.create_parameter_group ? 1 : 0
   name        = var.parameter_group_name
@@ -78,7 +107,7 @@ resource "aws_db_instance" "db_instance" {
   storage_type                    = var.storage_type
   iops                            = var.iops
   storage_encrypted               = var.storage_encrypted
-  vpc_security_group_ids          = [var.security_group_id]
+  vpc_security_group_ids          = [var.aws_security_group.security_group.id]
   tags = merge(var.tags, {
     Name = var.rds_instace_name
   })
@@ -113,7 +142,7 @@ resource "aws_db_instance" "db_instance_replica" {
   storage_type                    = var.storage_type
   iops                            = var.iops
   storage_encrypted               = var.storage_encrypted
-  vpc_security_group_ids          = [var.security_group_id]
+  vpc_security_group_ids          = [var.aws_security_group.security_group.id]
   tags       = merge(var.tags, {
     Name = var.rds_instace_name
   })
@@ -147,7 +176,7 @@ resource "aws_db_proxy" "proxy" {
   idle_client_timeout    = var.db_proxy_idle_client_timeout
   require_tls            = var.db_proxy_require_tls
   role_arn               = var.db_proxy_role_arn
-  vpc_security_group_ids = [var.security_group_id]
+  vpc_security_group_ids = [var.aws_security_group.security_group.id]
   vpc_subnet_ids         = data.aws_subnets.rds_subnets.ids
   tags                   = var.tags
 

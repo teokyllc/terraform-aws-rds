@@ -1,3 +1,7 @@
+data "aws_vpc" "vpc" {
+  id = var.vpc_id
+}
+
 data "aws_subnets" "rds_subnets" {
   filter {
     name   = "vpc-id"
