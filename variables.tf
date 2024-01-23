@@ -29,7 +29,7 @@ variable "db_port" {
 }
 
 variable "db_admin_username" {
-  type        = number
+  type        = string
   description = "The username of the RDS instance administrator."
   default     = null
 }
