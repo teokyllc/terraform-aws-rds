@@ -154,12 +154,10 @@ resource "aws_db_instance" "db_instance_replica" {
 }
 
 resource "aws_secretsmanager_secret" "rds_credentials" {
-  count = var.create_db_proxy ? 1 : 0
   name  = "${aws_db_instance.db_instance[0].identifier}-credentials"
 }
 
 resource "aws_secretsmanager_secret_version" "rds_credentials" {
-  count         = var.create_db_proxy ? 1 : 0
   secret_id     = aws_secretsmanager_secret.rds_credentials[0].id
   secret_string = <<EOF
 {
