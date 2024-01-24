@@ -187,7 +187,7 @@ resource "aws_db_proxy" "proxy" {
     auth_scheme = "SECRETS"
     description = aws_db_instance.db_instance[0].identifier
     iam_auth    = "DISABLED"
-    secret_arn  = aws_secretsmanager_secret.rds_credentials[0].arn
+    secret_arn  = aws_secretsmanager_secret.rds_credentials.arn
   }
 }
 
