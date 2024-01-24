@@ -51,5 +51,5 @@ output "db_proxy_endpoint" {
 }
 
 output "db_rds_credentials_arn" {
-  value = var.create_db_proxy ? aws_secretsmanager_secret.rds_credentials[0].arn : null
+  value = var.create_db_proxy ? aws_secretsmanager_secret.rds_credentials.arn : null
 }

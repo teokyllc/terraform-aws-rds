@@ -158,7 +158,7 @@ resource "aws_secretsmanager_secret" "rds_credentials" {
 }
 
 resource "aws_secretsmanager_secret_version" "rds_credentials" {
-  secret_id     = aws_secretsmanager_secret.rds_credentials[0].id
+  secret_id     = aws_secretsmanager_secret.rds_credentials.id
   secret_string = <<EOF
 {
   "username": "${var.db_admin_username}",
