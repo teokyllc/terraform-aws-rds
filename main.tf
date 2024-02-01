@@ -75,11 +75,6 @@ resource "aws_db_subnet_group" "subnet_group" {
   })
 }
 
-resource "random_password" "rds_password" {
-  length  = 16
-  special = false
-}
-
 resource "aws_db_instance" "db_instance" {
   count                           = var.create_db_instance ? 1 : 0
   allocated_storage               = var.allocated_storage
@@ -93,7 +88,7 @@ resource "aws_db_instance" "db_instance" {
   multi_az                        = var.multi_az
   character_set_name              = var.character_set_name
   username                        = var.db_admin_username
-  password                        = random_password.rds_password.result
+  manage_master_user_password     = true
   parameter_group_name            = var.create_parameter_group ? aws_db_parameter_group.parameter_group[0].name : null
   db_subnet_group_name            = aws_db_subnet_group.subnet_group.name
   option_group_name               = var.create_option_group ? aws_db_option_group.option_group[0].name : null
@@ -151,59 +146,4 @@ resource "aws_db_instance" "db_instance_replica" {
   tags       = merge(var.tags, {
     Name = var.rds_instace_name
   })
-}
-
-resource "aws_secretsmanager_secret" "rds_credentials" {
-  name  = "${aws_db_instance.db_instance[0].identifier}-credentials"
-}
-
-resource "aws_secretsmanager_secret_version" "rds_credentials" {
-  secret_id     = aws_secretsmanager_secret.rds_credentials.id
-  secret_string = <<EOF
-{
-  "username": "${var.db_admin_username}",
-  "password": "${random_password.rds_password.result}",
-  "engine": "mysql",
-  "host": "${aws_db_instance.db_instance[0].endpoint}",
-  "port": ${aws_db_instance.db_instance[0].port},
-  "dbClusterIdentifier": "${aws_db_instance.db_instance[0].identifier}"
-}
-EOF
-}
-
-resource "aws_db_proxy" "proxy" {
-  count                  = var.create_db_proxy ? 1 : 0
-  name                   = var.db_proxy_name
-  debug_logging          = var.db_proxy_debug_logging
-  engine_family          = var.db_proxy_engine_family
-  idle_client_timeout    = var.db_proxy_idle_client_timeout
-  require_tls            = var.db_proxy_require_tls
-  role_arn               = var.db_proxy_role_arn
-  vpc_security_group_ids = [aws_security_group.security_group.id]
-  vpc_subnet_ids         = data.aws_subnets.rds_subnets.ids
-  tags                   = var.tags
-
-  auth {
-    auth_scheme = "SECRETS"
-    description = aws_db_instance.db_instance[0].identifier
-    iam_auth    = "DISABLED"
-    secret_arn  = aws_secretsmanager_secret.rds_credentials.arn
-  }
-}
-
-resource "aws_db_proxy_default_target_group" "proxy_default_target_group" {
-  count         = var.create_db_proxy ? 1 : 0
-  db_proxy_name = aws_db_proxy.proxy[0].name
-
-  connection_pool_config {
-    connection_borrow_timeout    = 120
-    max_connections_percent      = 100
-  }
-}
-
-resource "aws_db_proxy_target" "proxy_target" {
-  count                  = var.create_db_proxy ? 1 : 0
-  db_instance_identifier = aws_db_instance.db_instance[0].identifier
-  db_proxy_name          = aws_db_proxy.proxy[0].name
-  target_group_name      = aws_db_proxy_default_target_group.proxy_default_target_group[0].name
 }

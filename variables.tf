@@ -138,7 +138,7 @@ variable "snapshot_identifier" {
 variable "storage_type" {
   type        = string
   description = "One of 'standard' (magnetic), 'gp2' (general purpose SSD), 'gp3' (general purpose SSD that needs iops independently) or 'io1' (provisioned IOPS SSD)."
-  default     = "gp2"
+  default     = "gp3"
 }
 
 variable "max_allocated_storage" {
@@ -239,46 +239,4 @@ variable "performance_insights_enabled" {
   type        = bool
   description = "Specifies whether Performance Insights are enabled."
   default     = false
-}
-
-variable "create_db_proxy" {
-  type        = bool
-  description = "Creates an RDS proxy."
-  default     = false
-}
-
-variable "db_proxy_name" {
-  type        = string
-  description = "The identifier for the proxy."
-  default     = null
-}
-
-variable "db_proxy_debug_logging" {
-  type        = bool
-  description = "Whether the proxy includes detailed information about SQL statements in its logs."
-  default     = false
-}
-
-variable "db_proxy_engine_family" {
-  type        = string
-  description = "Valid values are MYSQL, POSTGRESQL, and SQLSERVER."
-  default     = null
-}
-
-variable "db_proxy_idle_client_timeout" {
-  type        = number
-  description = "The number of seconds that a connection to the proxy can be inactive before the proxy disconnects it."
-  default     = null
-}
-
-variable "db_proxy_require_tls" {
-  type        = bool
-  description = "Specifies whether Transport Layer Security (TLS) encryption is required for connections to the proxy."
-  default     = false
-}
-
-variable "db_proxy_role_arn" {
-  type        = string
-  description = "The Amazon Resource Name (ARN) of the IAM role that the proxy uses to access secrets in AWS Secrets Manager."
-  default     = null
 }

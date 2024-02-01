@@ -41,15 +41,3 @@ output "db_parameters_group_id" {
 output "db_parameters_group_arn" {
   value = var.create_parameter_group ? aws_db_parameter_group.parameter_group[0].arn : null
 }
-
-output "db_proxy_arn" {
-  value = var.create_db_proxy ? aws_db_proxy.proxy[0].arn : null
-}
-
-output "db_proxy_endpoint" {
-  value = var.create_db_proxy ? aws_db_proxy.proxy[0].endpoint : null
-}
-
-output "db_rds_credentials_arn" {
-  value = var.create_db_proxy ? aws_secretsmanager_secret.rds_credentials.arn : null
-}
